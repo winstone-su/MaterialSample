@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">MaterialSample</string>
+    <string name="app_name">Material演示</string>
+    <string name="setting">setting</string>
+    <string name="about">about</string>
+    <string name="protocol">protocol</string>
+    <string name="cleanCache">清除缓存</string>
+    <string name="navigation">导航</string>
+    <string name="user">用户</string>
+    <string name="open">open</string>
+    <string name="imageHint">图片</string>
 </resources>
