@@ -12,18 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FlowerAdapter extends RecyclerView.Adapter<FlowerAdapter.FlowerViewHolder> {
-    private static final String TAG = "FlowerAdapter";
+//    private static final String TAG = "FlowerAdapter";
     private Context context;
     private List<Flower> mFlowerList;
 
     public FlowerAdapter(List<Flower> flowerList) {
-        mFlowerList = mFlowerList;
+        mFlowerList = flowerList;
     }
 
     @NonNull
@@ -34,28 +36,27 @@ public class FlowerAdapter extends RecyclerView.Adapter<FlowerAdapter.FlowerView
         }
         View view = LayoutInflater.from(context).inflate(R.layout.flower_item,parent,false);
         final  FlowerViewHolder  holder = new FlowerViewHolder(view);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int position = holder.getAdapterPosition();
-                Flower flower = mFlowerList.get(position);
-                Intent intent = new Intent(context,FlowerActivity.class);
-                intent.putExtra(FlowerActivity.FLOWER_NAME,flower.getName());
-                intent.putExtra(FlowerActivity.FLOWERE_IMAGE_ID,flower.getImageId());
-                context.startActivity(intent);
-            }
+        holder.cardView.setOnClickListener(view1 -> {
+            int position = holder.getAbsoluteAdapterPosition();
+            Flower flower = mFlowerList.get(position);
+            Intent intent = new Intent(context,FlowerActivity.class);
+            intent.putExtra(FlowerActivity.FLOWER_NAME,flower.getName());
+            intent.putExtra(FlowerActivity.FLOWERE_IMAGE_ID,flower.getImageId());
+            context.startActivity(intent);
         });
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FlowerViewHolder holder, int position) {
-
+        Flower flower = mFlowerList.get(position);
+        holder.flowerName.setText(flower.getName());
+        Glide.with(context).load(flower.getImageId()).into(holder.flowerImage);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mFlowerList.size();
     }
 
     static class FlowerViewHolder extends RecyclerView.ViewHolder {
