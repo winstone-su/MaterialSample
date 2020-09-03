@@ -41,7 +41,7 @@ public class FlowerAdapter extends RecyclerView.Adapter<FlowerAdapter.FlowerView
             Flower flower = mFlowerList.get(position);
             Intent intent = new Intent(context,FlowerActivity.class);
             intent.putExtra(FlowerActivity.FLOWER_NAME,flower.getName());
-            intent.putExtra(FlowerActivity.FLOWERE_IMAGE_ID,flower.getImageId());
+            intent.putExtra(FlowerActivity.FLOWER_IMAGE_ID,flower.getImageId());
             context.startActivity(intent);
         });
         return holder;
