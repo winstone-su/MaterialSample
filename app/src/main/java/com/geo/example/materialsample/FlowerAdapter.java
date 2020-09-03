@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,9 +25,15 @@ public class FlowerAdapter extends RecyclerView.Adapter<FlowerAdapter.FlowerView
 //    private static final String TAG = "FlowerAdapter";
     private Context context;
     private List<Flower> mFlowerList;
+    private List<Integer> heightList;//装产出的随机数
 
     public FlowerAdapter(List<Flower> flowerList) {
         mFlowerList = flowerList;
+        heightList = new ArrayList<>();
+        for (int i = 0;i< flowerList.size();i++){
+            int height = new Random().nextInt(200) + 300;
+            heightList.add(height);
+        }
     }
 
     @NonNull
@@ -52,6 +60,9 @@ public class FlowerAdapter extends RecyclerView.Adapter<FlowerAdapter.FlowerView
         Flower flower = mFlowerList.get(position);
         holder.flowerName.setText(flower.getName());
         Glide.with(context).load(flower.getImageId()).into(holder.flowerImage);
+        ViewGroup.LayoutParams params = holder.flowerImage.getLayoutParams();
+        params.height=heightList.get(position);
+        holder.flowerImage.setLayoutParams(params);
     }
 
     @Override
