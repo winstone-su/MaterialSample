@@ -12,11 +12,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.geo.example.materialsample.share.OnResponseListener;
+import com.geo.example.materialsample.share.WXShare;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FlowerActivity extends BaseActivity {
     public static final String FLOWER_NAME = "flower_name";
@@ -32,6 +36,9 @@ public class FlowerActivity extends BaseActivity {
     AppBarLayout appbar;
     @BindView(R.id.flower_content_text)
     TextView flowerContentText;
+    @BindView(R.id.comment_share)
+    FloatingActionButton commentShare;
+    private WXShare wxShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,25 @@ public class FlowerActivity extends BaseActivity {
         Glide.with(this).load(flowerImageId).into(appBarImage);
         String flowerContent = generateFruitContent(flowerName);
         flowerContentText.setText(flowerContent);
+        wxShare = new WXShare(this);
+        wxShare.setListener(new OnResponseListener() {
+            @Override
+            public void onSuccess() {
+                showToast("WXShare Success");
+            }
+
+            @Override
+            public void onCancel() {
+                showToast("WXShare Cancel");
+            }
+
+            @Override
+            public void onFail(String message) {
+                showToast("WXShare failed: " + message);
+            }
+        });
+
+
     }
 
     private String generateFruitContent(String flowerName) {
@@ -62,12 +88,31 @@ public class FlowerActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        wxShare.register();
+    }
+
+    @Override
+    protected void onDestroy() {
+        wxShare.unregister();
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.comment_share)
+    public void onViewClicked() {
+//        wxShare.share("分享到微信示例");
+//        wxShare.shareImage(null);
+        wxShare.shareVideo("http://www.baidu.com","标题","描述");
     }
 }

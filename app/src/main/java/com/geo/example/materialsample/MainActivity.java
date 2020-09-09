@@ -29,6 +29,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.appbar)
